@@ -1,35 +1,30 @@
 import numpy as np
-from perceptron import *
-brain = perceptron(784, 2, 256, 10, 900000)
+from NeuralNetwork import *
+from mnistdata import *
+import matplotlib.pyplot as plt 
+import matplotlib.animation as animation
+
+brain = perceptron(784, 2, 256, 10, 4)
 brain.setLearningRate(.0001)
 
-
-def loadMNIST( prefix, folder ):
-    intType = np.dtype( 'int32' ).newbyteorder( '>' )
-    nMetaDataBytes = 4 * intType.itemsize
-
-    data = np.fromfile( folder + "/" + prefix + '-images.idx3-ubyte', dtype = 'ubyte' )
-    magicBytes, nImages, width, height = np.frombuffer( data[:nMetaDataBytes].tobytes(), intType )
-    data = data[nMetaDataBytes:].astype( dtype = 'float32' ).reshape( [ nImages, width, height ] )
-
-    labels = np.fromfile( folder + "/" + prefix + '-labels.idx1-ubyte',
-                          dtype = 'ubyte' )[2 * intType.itemsize:]
-
-    return data, labels
-
+# put in the file path of your MNIST files
 trainingImages, trainingLabels = loadMNIST("train", "C:/Users/david/Downloads/datasets/mnist")
 testImages, testLabels = loadMNIST("t10k", "C:/Users/david/Downloads/datasets/mnist")
-
-def toHotEncoding( classification ):
-    # emulates the functionality of tf.keras.utils.to_categorical( y )
-    hotEncoding = np.zeros([len(classification), 
-                              np.max(classification) + 1])
-    hotEncoding[np.arange(len(hotEncoding)), classification] = 1
-    return hotEncoding
 
 trainingLabels = toHotEncoding(trainingLabels)
 testLabels = toHotEncoding(testLabels)
 
-brain.fit(trainingImages, trainingLabels)
+print("training...")
 
+# train and test the network
+brain.fit(trainingImages, trainingLabels)
 brain.test(testImages, testLabels)
+
+print(brain.getLearningRate())
+for i in range(1): # len(testImages)):
+    index = len(testImages)-18 # np.random.randint(len(testImages))
+    img = np.array(testImages[index])
+    numberlabel = largest_index(testLabels[index])
+    plt.title("index %d, label %g" %(index, numberlabel))
+    imgshow = plt.imshow(img, cmap='gray')
+    plt.show(True)
