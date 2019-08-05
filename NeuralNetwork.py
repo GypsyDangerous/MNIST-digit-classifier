@@ -14,13 +14,7 @@ def percent(x, total=100, level=100):
 	return truncate((x/total)*100, level)
 
 def largest_index(guess):
-	biggest = 0
-	biggestIndex = 0
-	for i in range(len(guess)):
-		if guess[i] > biggest:
-			biggest = guess[i]
-			biggestIndex = i
-	return biggestIndex
+	return np.argmax(guess)
 
 class perceptron:
 	# initialize the Network with hyperparameters
