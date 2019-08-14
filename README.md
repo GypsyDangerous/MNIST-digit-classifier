@@ -8,5 +8,5 @@ the network can currently classify the MNIST data with approximately 95% percent
 ## To do
 - [ ] add visualizations of the digits and interactivity for user drawings.
 - [ ] improve the networks initial hyperparameters for better accuracy.
-- [ ] save a very accurate model for later use.
+- [x] save a very accurate model for later use.
 - [ ] improve the [neural network library](https://github.com/GypsyDangerous/Python-Neural-Network)
